@@ -11,6 +11,8 @@ dist/
 
 # Kobo Database
 KoboReader.sqlite
+*.sqlite-shm
+*.sqlite-wal
 
 # Output
 Annotations/
@@ -31,4 +33,3 @@ pnpm-debug.log*
 .env
 .env.production
 .DS_Store
-
