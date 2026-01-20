@@ -73,3 +73,9 @@ bun run build
 
 The generated files will be inside the `dist/` folder.
 
+### ⚠️ How to use the `dist` folder
+The `dist` folder contains a static website.
+- **Do NOT open `index.html` directly**: Browsers block features when opening files dynamically (`file://` protocol).
+- **To view locally**: Run `bun run preview`. This starts a small local server to view the `dist` content.
+- **To host online**: You can upload the contents of `dist` to GitHub Pages, Netlify, or Vercel.
+
