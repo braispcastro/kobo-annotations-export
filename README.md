@@ -34,6 +34,10 @@ Instead of exporting static files, this app reads directly from your `KoboReader
 
 To generate a static version of your annotations (HTML files):
 
+**Option A (Easy)**: 
+Double-click `build_site.bat`. This will clean the old version and generate a new one automatically.
+
+**Option B (Manual)**:
 ```bash
 bun run build
 ```
