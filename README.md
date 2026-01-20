@@ -11,6 +11,7 @@ This project allows you to visualize your highlights and notes in a **premium in
 ## ✨ Key Features
 
 - **⚡ Zero Export**: Reads directly from `KoboReader.sqlite`. No CSV/JSON export steps needed.
+- **📊 Detailed Metadata**: Displays annotation type, chapter progress with visual bars, and localized timestamps.
 - **🎨 Visual Fidelity**: Accurately renders Kobo highlight colors (**Green**, **Blue**, **Pink**, **Yellow**).
 - **🌗 Theme Switcher**: Includes a persistent **Light/Dark** mode toggle.
 - **💎 Premium UI**: Glassmorphism cards, Inter typography, and responsive grid layout.

@@ -15,6 +15,7 @@ export interface Annotation {
   Color: string | null;
   ContentID: string;
   Author: string; // Derived
+  ChapterProgress: number;
 }
 
 export function getAnnotations(): Annotation[] {
@@ -27,7 +28,8 @@ export function getAnnotations(): Annotation[] {
         b.DateModified,
         b.Type,
         b.Color,
-        c.ContentID
+        c.ContentID,
+        b.ChapterProgress
     FROM Bookmark b
     JOIN content c on b.ContentID = c.ContentID
     WHERE (b.Type = 'highlight' OR b.Type = 'note')
@@ -56,6 +58,7 @@ export function getAnnotations(): Annotation[] {
       Color: row.Color,
       ContentID: row.ContentID,
       Author: author,
+      ChapterProgress: row.ChapterProgress || 0,
     };
   });
 }
