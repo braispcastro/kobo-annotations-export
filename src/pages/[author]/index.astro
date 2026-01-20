@@ -23,7 +23,7 @@ const { books, tree } = Astro.props;
 
 	<div class="grid">
 		{books.map((book) => (
-			<a href={`/${author}/${book}`} class="card">
+			<a href={`/${author}/${book}/`} class="card">
 				<h2 style="font-size: 1.25rem;">{book}</h2>
 				<p style="color: var(--text-secondary);">
 					{tree[author][book].length} Annotation{tree[author][book].length !== 1 ? 's' : ''}
