@@ -1,45 +1,80 @@
-# Kobo Annotations Viewer
+# 📚 Kobo Annotations Viewer
 
-A modern, local web viewer for your Kobo eReader annotations, built with **Astro**, **Bun**, and **SQLite**.
+![License](https://img.shields.io/badge/license-MIT-blue.svg) ![Astro](https://img.shields.io/badge/Astro-5.0-orange.svg) ![Bun](https://img.shields.io/badge/Bun-1.0-black.svg) ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)
 
-Instead of exporting static files, this app reads directly from your `KoboReader.sqlite` database and presents your highlights and notes in a beautiful, searchable interface with a premium dark mode design.
+> A modern, local web viewer for your Kobo eReader annotations, capable of reading directly from the database without intermediate exports.
 
-## Features
+This project allows you to visualize your highlights and notes in a **premium interface** that respects the original context. It's built for speed and aesthetics.
 
-- **Direct Database Access**: No intermediate files. Reads `KoboReader.sqlite` directly.
-- **Modern UI**: Dark mode, glassmorphism, and responsive design.
-- **Theme Switcher**: Toggle between **Light** and **Dark** modes with persistent preference.
-- **Kobo Color Support**: Visualizes highlights in their original colors (Green, Blue, Pink, Yellow), adapted for both themes.
-- **Fast**: Built on Bun and Astro for instant performance.
+---
 
-## Prerequisites
+## ✨ Key Features
 
-- **Bun**: [Install Bun](https://bun.sh/) (v1.0+)
+- **⚡ Zero Export**: Reads directly from `KoboReader.sqlite`. No CSV/JSON export steps needed.
+- **🎨 Visual Fidelity**: Accurately renders Kobo highlight colors (**Green**, **Blue**, **Pink**, **Yellow**).
+- **🌗 Theme Switcher**: Includes a persistent **Light/Dark** mode toggle.
+- **💎 Premium UI**: Glassmorphism cards, Inter typography, and responsive grid layout.
+- **🚀 High Performance**: Powered by Bun's native SQLite driver and Astro's static generation.
 
-## Quick Start
+## 🛠️ Tech Stack
 
-1.  Clone this repository.
-2.  Place your `KoboReader.sqlite` file in the project root.
-3.  Install dependencies:
+This project is built with a modern, performance-first stack:
+
+| Technology | Role | Why? |
+| :--- | :--- | :--- |
+| **[Astro](https://astro.build/)** | Web Framework | Generates ultra-fast static HTML/CSS. |
+| **[Bun](https://bun.sh/)** | Runtime & Package Manager | Instant startup and native SQLite support (`bun:sqlite`). |
+| **[TypeScript](https://www.typescriptlang.org/)** | Language | Type safety for reliable database queries. |
+| **[CSS Variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)** | Styling | flexible theming without heavy libraries like Tailwind. |
+
+## 🚀 Quick Start
+
+### Prerequisites
+- **[Bun](https://bun.sh/)** installed on your machine.
+
+### Installation
+
+1.  **Clone the repository**:
+    ```bash
+    git clone https://github.com/braispcastro/kobo-annotations-export.git
+    cd kobo-annotations-export
+    ```
+
+2.  **Add your database**:
+    Copy your `KoboReader.sqlite` file (found in the `.kobo` folder of your reader) to the root of this project.
+
+3.  **Install dependencies**:
     ```bash
     bun install
     ```
-4.  Start the viewer:
+
+4.  **Run the viewer**:
     ```bash
     bun dev
     ```
-5.  Open [http://localhost:4321](http://localhost:4321) in your browser.
+    Open **[http://localhost:4321](http://localhost:4321)** to browse your library.
 
-## Building for Production
+---
 
-To generate a static version of your annotations (HTML files):
+## 📦 Building for Production
 
-**Option A (Easy)**: 
-Double-click `build_site.bat`. This will clean the old version and generate a new one automatically.
+You can generate a completely static website (HTML files) to save your annotations forever or share them.
 
-**Option B (Manual)**:
+### Option A: One-Click Build (Recommended)
+Simply double-click the `build_site.bat` file in the project root.
+*   ✅ Cleans previous builds.
+*   ✅ Generates new static files.
+*   ✅ Reports status.
+
+### Option B: Manual Build
 ```bash
 bun run build
 ```
 
-The output will be in the `dist/` folder.
+The generated files will be inside the `dist/` folder.
+
+---
+
+## 📝 License
+
+This project is open source and available under the [MIT License](LICENSE).
