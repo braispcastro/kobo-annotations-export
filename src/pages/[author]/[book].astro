@@ -48,7 +48,9 @@ const bgMap: Record<string, string> = {
 
 	<div class="annotations">
 		{annotations.map((annot) => {
-            const colorKey = annot.Color || "none";
+            // Fix: 0 is falsy, so we must check for null/undefined explicitly
+            const colorKey = (annot.Color !== null && annot.Color !== undefined) ? String(annot.Color) : "none";
+            
             const borderColor = colorMap[colorKey] || "var(--border-color)";
             const bgColor = bgMap[colorKey] || "rgba(255,255,255,0.02)";
             

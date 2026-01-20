@@ -8,7 +8,8 @@ Instead of exporting static files, this app reads directly from your `KoboReader
 
 - **Direct Database Access**: No intermediate files. Reads `KoboReader.sqlite` directly.
 - **Modern UI**: Dark mode, glassmorphism, and responsive design.
-- **Kobo Color Support**: Visualizes highlights in their original colors (Green, Blue, Pink, Yellow).
+- **Theme Switcher**: Toggle between **Light** and **Dark** modes with persistent preference.
+- **Kobo Color Support**: Visualizes highlights in their original colors (Green, Blue, Pink, Yellow), adapted for both themes.
 - **Fast**: Built on Bun and Astro for instant performance.
 
 ## Prerequisites
