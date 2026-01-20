@@ -1,0 +1,37 @@
+---
+import "../styles/global.css";
+
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Kobo Annotations Export" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+	</head>
+	<body>
+		<header class="container" style="padding-bottom: 0; display: flex; justify-content: space-between; align-items: center;">
+			<a href="/" style="font-size: 1.5rem; font-weight: 700; color: white;">📚 Kobo Annotations</a>
+		</header>
+		
+		<main class="container">
+			<slot />
+		</main>
+
+		<footer class="container" style="text-align: center; color: var(--text-secondary); font-size: 0.875rem; margin-top: 3rem;">
+			<p>Exported with Astro & Bun</p>
+		</footer>
+	</body>
+</html>

@@ -1,0 +1,47 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getGroupedAnnotations } from '../../db';
+
+export function getStaticPaths() {
+  const tree = getGroupedAnnotations();
+  return Object.keys(tree).map((author) => ({
+    params: { author },
+    props: { books: Object.keys(tree[author]), tree: tree },
+  }));
+}
+
+const { author } = Astro.params;
+const { books, tree } = Astro.props;
+---
+
+<Layout title={`${author} | Books`}>
+	<div style="margin-bottom: 2rem;">
+		<a href="/" style="font-size: 0.9rem;">&larr; Back to Authors</a>
+	</div>
+
+	<h1>{author}</h1>
+
+	<div class="grid">
+		{books.map((book) => (
+			<a href={`/${author}/${book}`} class="card">
+				<h2 style="font-size: 1.25rem;">{book}</h2>
+				<p style="color: var(--text-secondary);">
+					{tree[author][book].length} Annotation{tree[author][book].length !== 1 ? 's' : ''}
+				</p>
+			</a>
+		))}
+	</div>
+</Layout>
+
+<style>
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+		gap: 1.5rem;
+	}
+	a.card {
+		display: block;
+		text-decoration: none;
+		color: inherit;
+	}
+</style>

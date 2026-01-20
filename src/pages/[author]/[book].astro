@@ -1,0 +1,77 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getGroupedAnnotations } from '../../db';
+
+export function getStaticPaths() {
+  const tree = getGroupedAnnotations();
+  const paths = [];
+
+  for (const author of Object.keys(tree)) {
+    for (const book of Object.keys(tree[author])) {
+      paths.push({
+        params: { author, book },
+        props: { annotations: tree[author][book] },
+      });
+    }
+  }
+  return paths;
+}
+
+const { author, book } = Astro.params;
+const { annotations } = Astro.props;
+
+const colorMap: Record<string, string> = {
+  "3": "var(--highlight-green)",
+  "2": "var(--highlight-blue)",
+  "1": "var(--highlight-pink)",
+  "0": "var(--highlight-yellow)",
+};
+
+const bgMap: Record<string, string> = {
+  "3": "var(--highlight-green-bg)",
+  "2": "var(--highlight-blue-bg)",
+  "1": "var(--highlight-pink-bg)",
+  "0": "var(--highlight-yellow-bg)",
+};
+
+// Sort by chapter? They are already sorted by BookTitle then DateCreated in SQL.
+// Usually that's good enough.
+---
+
+<Layout title={`${book} | Annotations`}>
+	<div style="margin-bottom: 2rem;">
+		<a href={`/${author}`} style="font-size: 0.9rem;">&larr; Back to {author}</a>
+	</div>
+
+	<h1 style="margin-bottom: 0.5rem;">{book}</h1>
+    <p style="color: var(--text-secondary); margin-bottom: 3rem;">by {author}</p>
+
+	<div class="annotations">
+		{annotations.map((annot) => {
+            const colorKey = annot.Color || "none";
+            const borderColor = colorMap[colorKey] || "var(--border-color)";
+            const bgColor = bgMap[colorKey] || "rgba(255,255,255,0.02)";
+            
+            return (
+                <div class="card" style={`border-left: 4px solid ${borderColor}; background: ${bgColor};`}>
+                    {annot.Text && (
+                        <blockquote style="border: none; background: transparent; padding: 0; margin-bottom: 1rem; font-style: italic;">
+                            "{annot.Text.trim()}"
+                        </blockquote>
+                    )}
+                    
+                    {annot.Annotation && (
+                         <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                            <strong style="color: var(--accent); display: block; margin-bottom: 0.25rem;">Note:</strong>
+                            {annot.Annotation}
+                        </div>
+                    )}
+
+                    <div style="margin-top: 0.75rem; font-size: 0.75rem; color: var(--text-secondary); text-align: right;">
+                        {annot.DateCreated.replace('T', ' ')}
+                    </div>
+                </div>
+            );
+        })}
+	</div>
+</Layout>

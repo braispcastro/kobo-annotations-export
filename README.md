@@ -1,57 +1,40 @@
-# Kobo Annotations Export
+# Kobo Annotations Viewer
 
-A simplified Python tool to export highlights and notes from a Kobo eReader database (`KoboReader.sqlite`) into beautifully formatted Markdown files, organized by Author and Book.
+A modern, local web viewer for your Kobo eReader annotations, built with **Astro**, **Bun**, and **SQLite**.
+
+Instead of exporting static files, this app reads directly from your `KoboReader.sqlite` database and presents your highlights and notes in a beautiful, searchable interface with a premium dark mode design.
 
 ## Features
 
-- **Automatic Extraction**: Reads the Kobo SQLite database and extracts all highlights and notes.
-- **Smart Organization**: Creates a folder structure `Annotations/<Author>/<Book>.md`.
-- **Visual Highlights**: Preserves the highlight colors (Green, Blue, Pink, Yellow) using HTML styling within the Markdown.
-- **Metadata**: Includes timestamps and annotation types.
-- **Cross-Platform**: Works on Windows, Mac, and Linux.
+- **Direct Database Access**: No intermediate files. Reads `KoboReader.sqlite` directly.
+- **Modern UI**: Dark mode, glassmorphism, and responsive design.
+- **Kobo Color Support**: Visualizes highlights in their original colors (Green, Blue, Pink, Yellow).
+- **Fast**: Built on Bun and Astro for instant performance.
 
-## How to Use
+## Prerequisites
 
-### Using the Executable (Windows)
+- **Bun**: [Install Bun](https://bun.sh/) (v1.0+)
 
-1. Connect your Kobo eReader to your computer.
-2. Locate the `KoboReader.sqlite` file in the `.kobo` folder of your device.
-3. Place `KoboExport.exe` in the same folder as `KoboReader.sqlite` (or copy the database to a folder on your computer).
-4. Run `KoboExport.exe`.
-5. A new folder named `Annotations` will be created containing your exports.
+## Quick Start
 
-### Running from Source
+1.  Clone this repository.
+2.  Place your `KoboReader.sqlite` file in the project root.
+3.  Install dependencies:
+    ```bash
+    bun install
+    ```
+4.  Start the viewer:
+    ```bash
+    bun dev
+    ```
+5.  Open [http://localhost:4321](http://localhost:4321) in your browser.
 
-Requirements: Python 3+
+## Building for Production
 
-1. Clone this repository.
-2. Place your `KoboReader.sqlite` file in the project directory.
-3. Run the script:
-   ```bash
-   python export_annotations.py
-   ```
+To generate a static version of your annotations (HTML files):
 
-## Building the Executable
+```bash
+bun run build
+```
 
-To create a standalone executable for your operating system:
-
-1. Install PyInstaller:
-   ```bash
-   pip install pyinstaller
-   ```
-2. Run the build command:
-   ```bash
-   pyinstaller --onefile --name KoboExport export_annotations.py
-   ```
-   *Or use the provided `build_executable.bat` on Windows.*
-
-## Output Format
-
-The generated Markdown files use HTML blockquotes to visually represent the highlight colors used on the Kobo device:
-
-- **Green**
-- **Blue**
-- **Pink**
-- **Yellow**
-
-Notes added to highlights are preserved and displayed below the text.
+The output will be in the `dist/` folder.
