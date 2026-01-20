@@ -1,6 +1,6 @@
 # 📚 Kobo Annotations Viewer
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg) ![Astro](https://img.shields.io/badge/Astro-5.0-orange.svg) ![Bun](https://img.shields.io/badge/Bun-1.0-black.svg) ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)
+![Astro](https://img.shields.io/badge/Astro-5.0-orange.svg) ![Bun](https://img.shields.io/badge/Bun-1.0-black.svg) ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)
 
 > A modern, local web viewer for your Kobo eReader annotations, capable of reading directly from the database without intermediate exports.
 
@@ -73,8 +73,3 @@ bun run build
 
 The generated files will be inside the `dist/` folder.
 
----
-
-## 📝 License
-
-This project is open source and available under the [MIT License](LICENSE).
