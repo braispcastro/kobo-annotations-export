@@ -16,9 +16,13 @@ export interface Annotation {
   ContentID: string;
   Author: string; // Derived
   ChapterProgress: number;
+  ChapterTitle: string | null;
 }
 
 export function getAnnotations(): Annotation[] {
+  // We join content 'c' (the file) and 'ch' (the chapter/toc entry)
+  // Kobo usually stores chapters as separate content rows with ContentID ending in -N
+  // and ContentType '899' (for kepubs).
   const query = db.query(`
     SELECT 
         c.BookTitle,
@@ -29,9 +33,14 @@ export function getAnnotations(): Annotation[] {
         b.Type,
         b.Color,
         c.ContentID,
-        b.ChapterProgress
+        b.ChapterProgress,
+        ch.Title as ChapterTitle
     FROM Bookmark b
     JOIN content c on b.ContentID = c.ContentID
+    LEFT JOIN content ch 
+        ON ch.BookID = c.BookID 
+        AND ch.ContentID LIKE (c.ContentID || '-%')
+        AND ch.ContentType = '899'
     WHERE (b.Type = 'highlight' OR b.Type = 'note')
       AND (b.Text IS NOT NULL OR b.Annotation IS NOT NULL)
     ORDER BY c.BookTitle, b.DateCreated
@@ -59,6 +68,7 @@ export function getAnnotations(): Annotation[] {
       ContentID: row.ContentID,
       Author: author,
       ChapterProgress: row.ChapterProgress || 0,
+      ChapterTitle: row.ChapterTitle || null,
     };
   });
 }
