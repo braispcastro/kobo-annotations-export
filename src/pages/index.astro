@@ -1,6 +1,6 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import { getGroupedAnnotations } from '../db';
+import Layout from "../layouts/Layout.astro";
+import { getGroupedAnnotations } from "../db";
 
 const tree = getGroupedAnnotations();
 const authors = Object.keys(tree).sort();
@@ -8,16 +8,19 @@ const authors = Object.keys(tree).sort();
 
 <Layout title="Authors | Kobo Annotations">
 	<h1>Authors</h1>
-	
+
 	<div class="grid">
-		{authors.map((author) => (
-			<a href={`/${author}/`} class="card">
-				<h2 style="font-size: 1.25rem;">{author}</h2>
-				<p style="color: var(--text-secondary);">
-					{Object.keys(tree[author]).length} Book{Object.keys(tree[author]).length !== 1 ? 's' : ''}
-				</p>
-			</a>
-		))}
+		{
+			authors.map((author) => (
+				<a href={`/${author}/`} class="card">
+					<h2 style="font-size: 1.25rem;">{author}</h2>
+					<p style="color: var(--text-secondary);">
+						{Object.keys(tree[author]).length} Book
+						{Object.keys(tree[author]).length !== 1 ? "s" : ""}
+					</p>
+				</a>
+			))
+		}
 	</div>
 </Layout>
 
@@ -25,7 +28,7 @@ const authors = Object.keys(tree).sort();
 	.grid {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-		gap: 1.5rem;
+		gap: 0.5rem;
 	}
 	a.card {
 		display: block;
