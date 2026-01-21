@@ -5,6 +5,7 @@ import path from "path";
 const db = new Database("data/KoboReader.sqlite", { readonly: true });
 
 export interface Annotation {
+  BookmarkID: string;
   BookTitle: string;
   Text: string | null;
   Annotation: string | null;
@@ -24,6 +25,7 @@ export function getAnnotations(): Annotation[] {
   // and ContentType '899' (for kepubs).
   const query = db.query(`
     SELECT 
+        b.BookmarkID,
         c.BookTitle,
         b.Text,
         b.Annotation,
@@ -40,8 +42,7 @@ export function getAnnotations(): Annotation[] {
         ON ch.BookID = c.BookID 
         AND ch.ContentID LIKE (c.ContentID || '-%')
         AND ch.ContentType = '899'
-    WHERE (b.Type = 'highlight' OR b.Type = 'note')
-      AND (b.Text IS NOT NULL OR b.Annotation IS NOT NULL)
+    WHERE (b.Type = 'highlight' OR b.Type = 'note' OR b.Type = 'markup')
     ORDER BY c.BookTitle, b.DateCreated
   `);
 
@@ -57,6 +58,7 @@ export function getAnnotations(): Annotation[] {
     }
 
     return {
+      BookmarkID: row.BookmarkID,
       BookTitle: row.BookTitle || "Unknown Book",
       Text: row.Text,
       Annotation: row.Annotation,

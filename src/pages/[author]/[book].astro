@@ -76,6 +76,29 @@ const bgMap: Record<string, string> = {
                             </span>
                         </div>
 
+                        {/* Markup Image - For handwritten annotations */}
+                        {annot.Type === "markup" && (
+                            <div
+                                class="markup-container"
+                                style="margin-bottom: 2rem; border-radius: 8px; overflow: hidden; background: #f5f5f5; position: relative; width: 100%; line-height: 0;"
+                            >
+                                {/* Base Page Image (JPG) */}
+                                <img
+                                    src={`/markups/${annot.BookmarkID}.jpg`}
+                                    alt="Page screenshot"
+                                    style="width: 100%; height: auto; display: block;"
+                                    loading="lazy"
+                                />
+                                {/* Annotation Overlay (SVG) */}
+                                <img
+                                    src={`/markups/${annot.BookmarkID}.svg`}
+                                    alt="Handwritten notes"
+                                    style="position: absolute; top: 0; left: 0; width: 100%; height: auto; mix-blend-mode: multiply; pointer-events: none;"
+                                    loading="lazy"
+                                />
+                            </div>
+                        )}
+
                         {annot.Text && (
                             <blockquote style="border: none; background: transparent; padding: 0; margin-bottom: 1rem; font-style: italic;">
                                 "{annot.Text.trim()}"
