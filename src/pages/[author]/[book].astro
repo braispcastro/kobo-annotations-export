@@ -61,8 +61,13 @@ const bgMap: Record<string, string> = {
                         ? String(annot.Color)
                         : "none";
 
-                const borderColor = colorMap[colorKey] || "var(--border-color)";
-                const bgColor = bgMap[colorKey] || "rgba(255,255,255,0.02)";
+                let borderColor = colorMap[colorKey] || "var(--border-color)";
+                let bgColor = bgMap[colorKey] || "rgba(255,255,255,0.02)";
+
+                if (annot.Type === "markup") {
+                    borderColor = "var(--highlight-markup)";
+                    bgColor = "var(--highlight-markup-bg)";
+                }
 
                 return (
                     <div
