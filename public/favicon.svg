@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- Forma del Libro -->
+  <path d="M6 4C6 2.89543 6.89543 2 8 2H24C25.1046 2 26 2.89543 26 4V28C26 29.1046 25.1046 30 24 30H8C6.89543 30 6 29.1046 6 28V4Z" fill="#0969da" class="book-cover"/>
+  <path d="M8 2H24V30H8C6.89543 30 6 29.1046 6 28V4C6 2.89543 6.89543 2 8 2Z" fill="url(#grad)" fill-opacity="0.2"/>
+  
+  <!-- "Páginas" del lateral -->
+  <path d="M24 2V30H25C25.5523 30 26 29.5523 26 29V3C26 2.44772 25.5523 2 25 2H24Z" fill="white" fill-opacity="0.3"/>
+  
+  <!-- Marca de Resaltado (Anotación) -->
+  <rect x="10" y="8" width="10" height="3" rx="1" fill="#FFD700" fill-opacity="0.9">
+    <animate attributeName="width" from="0" to="10" dur="0.8s" fill="freeze" />
+  </rect>
+  <rect x="10" y="14" width="12" height="3" rx="1" fill="#FFD700" fill-opacity="0.9">
+     <animate attributeName="width" from="0" to="12" dur="1s" fill="freeze" />
+  </rect>
+
+  <defs>
+    <linearGradient id="grad" x1="6" y1="2" x2="26" y2="30" gradientUnits="userSpaceOnUse">
+      <stop stop-color="white"/>
+      <stop offset="1" stop-color="black" stop-opacity="0.2"/>
+    </linearGradient>
+    <style>
+      @media (prefers-color-scheme: dark) {
+        .book-cover { fill: #58a6ff; }
+      }
+    </style>
+  </defs>
+</svg>
