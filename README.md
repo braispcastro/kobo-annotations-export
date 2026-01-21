@@ -78,11 +78,5 @@ Simply double-click the `build_site.bat` file in the project root.
     ```
     This launches an Nginx container serving your static site and images at port **8003**.
 
----
 
-## 🔒 Data Privacy
-Your books, highlights, and handwritten notes are **yours**.
--   The `data/` folder is included in `.gitignore`.
--   The `dist/` folder is included in `.gitignore`.
--   No personal data is ever uploaded to the repository when you commit. 🛡️
 
