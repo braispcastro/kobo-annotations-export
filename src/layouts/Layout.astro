@@ -29,7 +29,14 @@ const { title } = Astro.props;
 			<div class="container header-content">
 				<div style="display: flex; align-items: center; gap: 0.75rem;">
 					<slot name="back-button" />
-					<a href="/" class="site-title">📚 Kobo Annotations</a>
+					<a href="/" class="site-title">
+						<img
+							src="/favicon.svg"
+							alt="Kobo Annotations"
+							style="width: 1.5rem; height: 1.5rem;"
+						/>
+						Kobo Annotations
+					</a>
 					<slot name="header-title" />
 				</div>
 				<button

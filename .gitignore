@@ -9,8 +9,8 @@ dist/
 *.spec
 *.exe
 
-# Kobo Database
-KoboReader.sqlite
+# Kobo Database & Data
+data/
 *.sqlite-shm
 *.sqlite-wal
 

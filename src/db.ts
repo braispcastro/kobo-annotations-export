@@ -1,9 +1,8 @@
 import { Database } from "bun:sqlite";
 import path from "path";
 
-// Open the database. 
-// Assuming KoboReader.sqlite is in the project root.
-const db = new Database("KoboReader.sqlite", { readonly: true });
+// Open the database in the data folder.
+const db = new Database("data/KoboReader.sqlite", { readonly: true });
 
 export interface Annotation {
   BookTitle: string;
