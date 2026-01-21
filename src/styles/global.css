@@ -21,6 +21,9 @@
   --highlight-yellow: #9a6700;
   --highlight-yellow-bg: rgba(255, 215, 0, 0.15);
 
+  --highlight-markup: var(--border-color);
+  --highlight-markup-bg: rgba(255, 255, 255, 0.02);
+
   --font-family: 'Inter', system-ui, -apple-system, sans-serif;
   --header-bg: rgba(255, 255, 255, 0.8);
 }
@@ -49,6 +52,9 @@
   /* Yellow - High visibility for dark */
   --highlight-yellow: #FFD700;
   --highlight-yellow-bg: rgba(255, 215, 0, 0.25);
+
+  --highlight-markup: var(--border-color);
+  --highlight-markup-bg: rgba(255, 255, 255, 0.02);
   --header-bg: rgba(13, 17, 23, 0.8);
 }
 
