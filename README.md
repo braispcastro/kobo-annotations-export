@@ -13,6 +13,7 @@ This project allows you to visualize your highlights and notes in a **premium in
 - **⚡ Zero Export**: Reads directly from `KoboReader.sqlite`. No CSV/JSON export steps needed.
 - **📊 Detailed Metadata**: Displays annotation type, chapter progress with visual bars, and localized timestamps.
 - **🎨 Visual Fidelity**: Accurately renders Kobo highlight colors (**Green**, **Blue**, **Pink**, **Yellow**).
+- **✍️ Handwritten Markups**: Specialized support for Kobo Libra Colour handwritten annotations (SVG overlays over page screenshots).
 - **🌗 Theme Switcher**: Includes a persistent **Light/Dark** mode toggle.
 - **💎 Premium UI**: Glassmorphism cards, Inter typography, and responsive grid layout.
 - **🚀 High Performance**: Powered by Bun's native SQLite driver and Astro's static generation.
@@ -41,8 +42,10 @@ This project is built with a modern, performance-first stack:
     cd kobo-annotations-export
     ```
 
-2.  **Add your database**:
-    Copy your `KoboReader.sqlite` file (found in the `.kobo` folder of your reader) to the root of this project.
+2.  **Setup the `data` folder**:
+    The project expects your personal files inside a `data/` folder at the root (this folder is ignored by Git to keep your data private). Create it and copy:
+    -   `KoboReader.sqlite`: Found in the `.kobo/` folder of your device.
+    -   `markups/`: (Optional) Folder containing `.jpg` and `.svg` files from your device's `.kobo/markups/` directory if you want to see handwritten notes.
 
 3.  **Install dependencies**:
     ```bash
@@ -57,26 +60,29 @@ This project is built with a modern, performance-first stack:
 
 ---
 
-## 📦 Building for Production
+## 📦 Building and Deployment
 
-You can generate a completely static website (HTML files) to save your annotations forever or share them.
-
-### Option A: One-Click Build (Recommended)
+### 🏗️ Build (Windows)
 Simply double-click the `build_site.bat` file in the project root.
-*   ✅ Cleans previous builds.
-*   ✅ Generates new static files.
-*   ✅ Reports status.
+*   ✅ Automatically generates the static site.
+*   ✅ Copies your `markups/` folder into `dist/`.
+*   ✅ Copies the deployment script `start-server.sh` into `dist/`.
 
-### Option B: Manual Build
-```bash
-bun run build
-```
+### 🚀 Deploy (Raspberry Pi / Docker)
+1.  Copy the entire content of the `dist/` folder to your Raspberry Pi.
+2.  Ensure you have Docker installed.
+3.  Run the server:
+    ```bash
+    chmod +x start-server.sh
+    ./start-server.sh
+    ```
+    This launches an Nginx container serving your static site and images at port **8003**.
 
-The generated files will be inside the `dist/` folder.
+---
 
-### ⚠️ How to use the `dist` folder
-The `dist` folder contains a static website.
-- **Do NOT open `index.html` directly**: Browsers block features when opening files dynamically (`file://` protocol).
-- **To view locally**: Run `bun run preview`. This starts a small local server to view the `dist` content.
-- **To host online**: You can upload the contents of `dist` to GitHub Pages, Netlify, or Vercel.
+## 🔒 Data Privacy
+Your books, highlights, and handwritten notes are **yours**.
+-   The `data/` folder is included in `.gitignore`.
+-   The `dist/` folder is included in `.gitignore`.
+-   No personal data is ever uploaded to the repository when you commit. 🛡️
 
