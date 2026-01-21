@@ -31,8 +31,10 @@ const { books, tree } = Astro.props;
 				<a href={`/${author}/${book}/`} class="card">
 					<h2 style="font-size: 1.25rem;">{book}</h2>
 					<p style="color: var(--text-secondary);">
-						{tree[author][book].length} Annotation
-						{tree[author][book].length !== 1 ? "s" : ""}
+						{tree[author][book].length}{" "}
+						{tree[author][book].length === 1
+							? "Annotation"
+							: "Annotations"}
 					</p>
 				</a>
 			))
