@@ -1,6 +1,6 @@
 # 📚 Kobo Annotations Viewer
 
-![Astro](https://img.shields.io/badge/Astro-5.0-orange.svg) ![Bun](https://img.shields.io/badge/Bun-1.0-black.svg) ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)
+![Astro](https://img.shields.io/badge/Astro-5.0-orange.svg) ![Bun](https://img.shields.io/badge/Bun-1.0-black.svg) ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg) ![Antigravity](https://img.shields.io/badge/Made%20with-Antigravity-9cf.svg)
 
 > A modern, local web viewer for your Kobo eReader annotations, capable of reading directly from the database without intermediate exports.
 
