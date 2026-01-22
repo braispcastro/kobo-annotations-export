@@ -26,6 +26,7 @@
 
   --font-family: 'Inter', system-ui, -apple-system, sans-serif;
   --header-bg: rgba(255, 255, 255, 0.8);
+  --filter-bg: rgba(246, 248, 250, 0.8);
 }
 
 [data-theme="dark"] {
@@ -56,6 +57,7 @@
   --highlight-markup: var(--border-color);
   --highlight-markup-bg: rgba(255, 255, 255, 0.02);
   --header-bg: rgba(13, 17, 23, 0.8);
+  --filter-bg: rgba(22, 27, 34, 0.8);
 }
 
 html,
@@ -188,4 +190,108 @@ blockquote {
 /* In light mode, blockquote background needs adjustment too */
 :root:not([data-theme="dark"]) blockquote {
   background: rgba(0, 0, 0, 0.02);
+}
+
+/* Filters Styles */
+.filters-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: var(--filter-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  position: sticky;
+  top: 72px;
+  /* Just below the sticky header */
+  z-index: 900;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.filters-container.filters-hidden {
+  transform: translateY(-120%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.filter-btn {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.filter-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+.filter-btn.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+  filter: grayscale(1);
+}
+
+.color-dot {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  padding: 0;
+  border: 2px solid transparent;
+}
+
+.color-dot.active {
+  border-color: var(--text-primary);
+  box-shadow: 0 0 0 2px var(--bg-color);
+}
+
+.color-dot.yellow {
+  background: var(--highlight-yellow);
+}
+
+.color-dot.pink {
+  background: var(--highlight-pink);
+}
+
+.color-dot.blue {
+  background: var(--highlight-blue);
+}
+
+.color-dot.green {
+  background: var(--highlight-green);
 }

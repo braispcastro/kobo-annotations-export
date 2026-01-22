@@ -52,14 +52,52 @@ const bgMap: Record<string, string> = {
         by {author}
     </p>
 
+    <div class="filters-container">
+        <div class="filter-group">
+            <span class="filter-label">Type</span>
+            <div class="filter-buttons" id="type-filters">
+                <button class="filter-btn active" data-type="all">All</button>
+                <button class="filter-btn" data-type="highlight"
+                    >Highlights</button
+                >
+                <button class="filter-btn" data-type="note">Notes</button>
+                <button class="filter-btn" data-type="markup">Markups</button>
+            </div>
+        </div>
+        <div class="filter-group">
+            <span class="filter-label">Color</span>
+            <div class="filter-buttons" id="color-filters">
+                <button class="filter-btn active" data-color="all">All</button>
+                <button
+                    class="filter-btn color-dot yellow"
+                    data-color="0"
+                    title="Yellow"></button>
+                <button
+                    class="filter-btn color-dot pink"
+                    data-color="1"
+                    title="Pink"></button>
+                <button
+                    class="filter-btn color-dot blue"
+                    data-color="2"
+                    title="Blue"></button>
+                <button
+                    class="filter-btn color-dot green"
+                    data-color="3"
+                    title="Green"></button>
+            </div>
+        </div>
+    </div>
+
     <div class="annotations">
         {
             annotations.map((annot) => {
                 // Fix: 0 is falsy, so we must check for null/undefined explicitly
                 const colorKey =
-                    annot.Color !== null && annot.Color !== undefined
-                        ? String(annot.Color)
-                        : "none";
+                    annot.Type === "markup"
+                        ? "none"
+                        : annot.Color !== null && annot.Color !== undefined
+                          ? String(annot.Color)
+                          : "none";
 
                 let borderColor = colorMap[colorKey] || "var(--border-color)";
                 let bgColor = bgMap[colorKey] || "rgba(255,255,255,0.02)";
@@ -71,7 +109,9 @@ const bgMap: Record<string, string> = {
 
                 return (
                     <div
-                        class="card"
+                        class="card annotation-card"
+                        data-type={annot.Type}
+                        data-color={colorKey}
                         style={`border-left: 4px solid ${borderColor}; background: ${bgColor};`}
                     >
                         {/* Type Badge (Above Text) */}
@@ -202,6 +242,94 @@ const bgMap: Record<string, string> = {
             })
         }
     </div>
+
+    <script is:inline>
+        const typeButtons = document.querySelectorAll(
+            "#type-filters .filter-btn",
+        );
+        const colorButtons = document.querySelectorAll(
+            "#color-filters .filter-btn",
+        );
+        const cards = document.querySelectorAll(".annotation-card");
+
+        let activeType = "all";
+        let activeColor = "all";
+
+        function filterCards() {
+            cards.forEach((card) => {
+                const type = card.getAttribute("data-type");
+                const color = card.getAttribute("data-color");
+
+                const typeMatch = activeType === "all" || type === activeType;
+                const colorMatch =
+                    activeColor === "all" || color === activeColor;
+
+                if (typeMatch && colorMatch) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+
+        typeButtons.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                typeButtons.forEach((b) => b.classList.remove("active"));
+                btn.classList.add("active");
+                activeType = btn.getAttribute("data-type");
+
+                if (activeType === "markup") {
+                    // Reset color filter to 'all' and disable color buttons
+                    activeColor = "all";
+                    colorButtons.forEach((b) => {
+                        b.classList.remove("active");
+                        if (b.getAttribute("data-color") === "all") {
+                            b.classList.add("active");
+                        } else {
+                            b.classList.add("disabled");
+                        }
+                    });
+                } else {
+                    // Enable color buttons
+                    colorButtons.forEach((b) => b.classList.remove("disabled"));
+                }
+
+                filterCards();
+            });
+        });
+
+        colorButtons.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                colorButtons.forEach((b) => b.classList.remove("active"));
+                btn.classList.add("active");
+                activeColor = btn.getAttribute("data-color");
+                filterCards();
+            });
+        });
+
+        // Sticky filter scroll behavior
+        const filtersContainer = document.querySelector(".filters-container");
+        let lastScrollY = window.scrollY;
+
+        window.addEventListener(
+            "scroll",
+            () => {
+                const currentScrollY = window.scrollY;
+
+                // Show if scrolling up or at the very top
+                if (currentScrollY < lastScrollY || currentScrollY <= 0) {
+                    filtersContainer.classList.remove("filters-hidden");
+                }
+                // Hide if scrolling down and not at the top
+                else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                    filtersContainer.classList.add("filters-hidden");
+                }
+
+                lastScrollY = currentScrollY;
+            },
+            { passive: true },
+        );
+    </script>
 </Layout>
 
 <style>
