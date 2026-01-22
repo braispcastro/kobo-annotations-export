@@ -20,13 +20,14 @@ export interface Annotation {
 }
 
 export function getAnnotations(): Annotation[] {
-  // We join content 'c' (the file) and 'ch' (the chapter/toc entry)
-  // Kobo usually stores chapters as separate content rows with ContentID ending in -N
-  // and ContentType '899' (for kepubs).
+  // We join content 'c' (the specific file/chapter where the bookmark is)
+  // 'm' is the master book entry (ContentType 6) to get the Author (Attribution)
+  // 'ch' is for chapter titles (ContentType 899)
   const query = db.query(`
     SELECT 
         b.BookmarkID,
         c.BookTitle,
+        m.Attribution as AuthorName,
         b.Text,
         b.Annotation,
         b.DateCreated,
@@ -37,7 +38,8 @@ export function getAnnotations(): Annotation[] {
         b.ChapterProgress,
         ch.Title as ChapterTitle
     FROM Bookmark b
-    JOIN content c on b.ContentID = c.ContentID
+    JOIN content c ON b.ContentID = c.ContentID
+    LEFT JOIN content m ON c.BookID = m.ContentID AND m.ContentType = '6'
     LEFT JOIN content ch 
         ON ch.BookID = c.BookID 
         AND ch.ContentID LIKE (c.ContentID || '-%')
@@ -49,14 +51,6 @@ export function getAnnotations(): Annotation[] {
   const rows = query.all() as any[];
 
   return rows.map((row) => {
-    // Extract Author from ContentID
-    // Format: .../Calibre/Author Name/ Book Title...
-    let author = "Unknown Author";
-    const match = row.ContentID.match(/Calibre\/([^/]+)\//);
-    if (match) {
-      author = match[1];
-    }
-
     return {
       BookmarkID: row.BookmarkID,
       BookTitle: row.BookTitle || "Unknown Book",
@@ -67,7 +61,7 @@ export function getAnnotations(): Annotation[] {
       Type: row.Type,
       Color: row.Color,
       ContentID: row.ContentID,
-      Author: author,
+      Author: row.AuthorName || "Unknown Author",
       ChapterProgress: row.ChapterProgress || 0,
       ChapterTitle: row.ChapterTitle || null,
     };
