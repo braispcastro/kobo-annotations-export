@@ -26,13 +26,13 @@ This project allows you to visualize your highlights and notes in a **premium in
   <br>
 
   <p align="center">
-    <b>🗄️ Database & Author Selection</b><br>
+    <b>🗄️ Database & 👥 Author Selection</b><br>
     <img src="screenshots/data-selector.png" width="400">
     <img src="screenshots/author-selector.png" width="400">
   </p>
 
   <p align="center">
-    <b>📝 Annotations & 🖍️ Handwritten Markups</b><br>
+    <b>🖍️ Annotations & ✍️ Handwritten Markups</b><br>
     <img src="screenshots/annotations.png" width="400">
     <img src="screenshots/markup-one.png" width="400">
   </p>
