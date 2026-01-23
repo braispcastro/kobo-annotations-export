@@ -1,6 +1,6 @@
 # 📚 Kobo Annotations Viewer
 
-![Bun](https://img.shields.io/badge/Bun-1.1-000000?style=flat&logo=bun&logoColor=white) ![Astro](https://img.shields.io/badge/Astro-5.1-FF5D01?style=flat&logo=astro&logoColor=white) ![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?style=flat&logo=typescript&logoColor=white) ![Antigravity](https://img.shields.io/badge/Made%20with-Antigravity-9cf.svg) ![Vibe Coding](https://img.shields.io/badge/Vibe-Coding-FF69B4)
+![Bun](https://img.shields.io/badge/Bun-1.3-000000?style=flat&logo=bun&logoColor=white) ![Astro](https://img.shields.io/badge/Astro-5.16-FF5D01?style=flat&logo=astro&logoColor=white) ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=flat&logo=typescript&logoColor=white) ![Antigravity](https://img.shields.io/badge/Made%20with-Antigravity-9cf.svg) ![Vibe Coding](https://img.shields.io/badge/Vibe-Coding-FF69B4)
 
 > A modern, local web viewer for your Kobo eReader annotations, capable of reading directly from the database without intermediate exports.
 
@@ -11,8 +11,8 @@ This project allows you to visualize your highlights and notes in a **premium in
 ## ✨ Key Features
 
 - **⚡ On-Demand Reading**: Reads directly from multiple `KoboReader.sqlite` backups. No CSV/JSON export steps needed.
-- **� Multi-Database Support**: Manage and browse multiple versions or backups of your Kobo library from a single interface.
-- **�📊 Detailed Metadata**: Displays annotation type, chapter progress with visual bars, and localized timestamps.
+- **🗄️ Multi-Database Support**: Manage and browse multiple versions or backups of your Kobo library from a single interface.
+- **📊 Detailed Metadata**: Displays annotation type, chapter progress with visual bars, and localized timestamps.
 - **🎨 Visual Fidelity**: Accurately renders Kobo highlight colors (**Green**, **Blue**, **Pink**, **Yellow**).
 - **✍️ Handwritten Markups**: Specialized support for Kobo Libra Colour handwritten annotations (SVG overlays over page screenshots).
 - **🌗 Theme Switcher**: Includes a persistent **Light/Dark** mode toggle.
@@ -84,6 +84,3 @@ Simply double-click the `build_site.bat` file in the project root.
     ```
     This builds/runs a optimized Bun container. The server will be active at port **8003**.
     Populate the `data/` folder on your server with your database backups to see them in the app.
-
-
-
