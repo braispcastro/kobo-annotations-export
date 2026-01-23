@@ -16,7 +16,8 @@ This project allows you to visualize your highlights and notes in a **premium in
 - **🎨 Visual Fidelity**: Accurately renders Kobo highlight colors (**Green**, **Blue**, **Pink**, **Yellow**).
 - **✍️ Handwritten Markups**: Specialized support for Kobo Libra Colour handwritten annotations (SVG overlays over page screenshots).
 - **🌗 Theme Switcher**: Includes a persistent **Light/Dark** mode toggle.
-- **💎 Premium UI**: Glassmorphism cards, Inter typography, and responsive grid layout.
+- **🔍 Smart Filtering**: Instantly filter annotations by type (Highlights, Notes, Markups) or by their original Kobo color.
+- **💎 Premium UI**: Modern aesthetic with **Glassmorphism** effects (sticky headers and filters), Inter typography, and responsive grid layout.
 - **🚀 High Performance**: Powered by Bun's native SQLite driver and Astro's Server-Side Rendering (SSR).
 
 ## 📸 Screenshots
@@ -53,7 +54,7 @@ This project is built with a modern, performance-first stack:
 | **[Astro](https://astro.build/)** | Web Framework | Dynamic SSR for real-time database access. |
 | **[Bun](https://bun.sh/)** | Runtime & Package Manager | Instant startup and native SQLite support (`bun:sqlite`). |
 | **[TypeScript](https://www.typescriptlang.org/)** | Language | Type safety for reliable database queries. |
-| **[CSS Variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)** | Styling | Flexible theming without heavy libraries like Tailwind. |
+| **[CSS Variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)** | Styling | Flexible theming and **Glassmorphism** effects via `backdrop-filter`. |
 
 ## 🚀 Quick Start
 
