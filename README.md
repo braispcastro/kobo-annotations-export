@@ -19,6 +19,31 @@ This project allows you to visualize your highlights and notes in a **premium in
 - **💎 Premium UI**: Glassmorphism cards, Inter typography, and responsive grid layout.
 - **🚀 High Performance**: Powered by Bun's native SQLite driver and Astro's Server-Side Rendering (SSR).
 
+## 📸 Screenshots
+
+<details>
+  <summary><b>Click to expand the visual gallery</b></summary>
+  <br>
+
+  <p align="center">
+    <b>🗄️ Database & Author Selection</b><br>
+    <img src="screenshots/data-selector.png" width="400">
+    <img src="screenshots/author-selector.png" width="400">
+  </p>
+
+  <p align="center">
+    <b>📝 Annotations & 🖍️ Handwritten Markups</b><br>
+    <img src="screenshots/annotations.png" width="400">
+    <img src="screenshots/markup-one.png" width="400">
+  </p>
+
+  <p align="center">
+    <b>🌑 Dark Mode Aesthetics</b><br>
+    <img src="screenshots/markup-two.png" width="800">
+  </p>
+
+</details>
+
 ## 🛠️ Tech Stack
 
 This project is built with a modern, performance-first stack:
