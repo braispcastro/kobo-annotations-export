@@ -10,13 +10,14 @@ This project allows you to visualize your highlights and notes in a **premium in
 
 ## ✨ Key Features
 
-- **⚡ Zero Export**: Reads directly from `KoboReader.sqlite`. No CSV/JSON export steps needed.
-- **📊 Detailed Metadata**: Displays annotation type, chapter progress with visual bars, and localized timestamps.
+- **⚡ On-Demand Reading**: Reads directly from multiple `KoboReader.sqlite` backups. No CSV/JSON export steps needed.
+- **� Multi-Database Support**: Manage and browse multiple versions or backups of your Kobo library from a single interface.
+- **�📊 Detailed Metadata**: Displays annotation type, chapter progress with visual bars, and localized timestamps.
 - **🎨 Visual Fidelity**: Accurately renders Kobo highlight colors (**Green**, **Blue**, **Pink**, **Yellow**).
 - **✍️ Handwritten Markups**: Specialized support for Kobo Libra Colour handwritten annotations (SVG overlays over page screenshots).
 - **🌗 Theme Switcher**: Includes a persistent **Light/Dark** mode toggle.
 - **💎 Premium UI**: Glassmorphism cards, Inter typography, and responsive grid layout.
-- **🚀 High Performance**: Powered by Bun's native SQLite driver and Astro's static generation.
+- **🚀 High Performance**: Powered by Bun's native SQLite driver and Astro's Server-Side Rendering (SSR).
 
 ## 🛠️ Tech Stack
 
@@ -24,10 +25,10 @@ This project is built with a modern, performance-first stack:
 
 | Technology | Role | Why? |
 | :--- | :--- | :--- |
-| **[Astro](https://astro.build/)** | Web Framework | Generates ultra-fast static HTML/CSS. |
+| **[Astro](https://astro.build/)** | Web Framework | Dynamic SSR for real-time database access. |
 | **[Bun](https://bun.sh/)** | Runtime & Package Manager | Instant startup and native SQLite support (`bun:sqlite`). |
 | **[TypeScript](https://www.typescriptlang.org/)** | Language | Type safety for reliable database queries. |
-| **[CSS Variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)** | Styling | flexible theming without heavy libraries like Tailwind. |
+| **[CSS Variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)** | Styling | Flexible theming without heavy libraries like Tailwind. |
 
 ## 🚀 Quick Start
 
@@ -43,9 +44,13 @@ This project is built with a modern, performance-first stack:
     ```
 
 2.  **Setup the `data` folder**:
-    The project expects your personal files inside a `data/` folder at the root (this folder is ignored by Git to keep your data private). Create it and copy:
-    -   `KoboReader.sqlite`: Found in the `.kobo/` folder of your device.
-    -   `markups/`: (Optional) Folder containing `.jpg` and `.svg` files from your device's `.kobo/markups/` directory if you want to see handwritten notes.
+    The project expects your backups inside the `data/` folder. Create a subfolder for each backup:
+    ```text
+    data/
+      MyBackup_2026/
+        KoboReader.sqlite
+        markups/ (Optional: handwritten notes)
+    ```
 
 3.  **Install dependencies**:
     ```bash
@@ -56,7 +61,7 @@ This project is built with a modern, performance-first stack:
     ```bash
     bun dev
     ```
-    Open **[http://localhost:4321](http://localhost:4321)** to browse your library.
+    Open **[http://localhost:4321](http://localhost:4321)** to select a backup and browse your library.
 
 ---
 
@@ -64,19 +69,21 @@ This project is built with a modern, performance-first stack:
 
 ### 🏗️ Build (Windows)
 Simply double-click the `build_site.bat` file in the project root.
-*   ✅ Automatically generates the static site.
-*   ✅ Copies your `markups/` folder into `dist/`.
-*   ✅ Copies the deployment script `start-server.sh` into `dist/`.
+*   ✅ Automatically builds the SSR application.
+*   ✅ Prepares the `dist/` folder for deployment.
+*   ✅ Creates an empty `data/` directory in the output for your backups.
 
 ### 🚀 Deploy (Raspberry Pi / Docker)
-1.  Copy the entire content of the `dist/` folder to your Raspberry Pi.
-2.  Ensure you have Docker installed.
-3.  Run the server:
+1.  Run `build_site.bat` on your Windows machine.
+2.  Copy the **entire contents** of the `dist/` folder to your server (Raspberry Pi). This includes `Dockerfile`, `start-server.sh`, `package.json`, etc.
+3.  Ensure you have Docker installed.
+4.  Run the server on your Pi:
     ```bash
     chmod +x start-server.sh
     ./start-server.sh
     ```
-    This launches an Nginx container serving your static site and images at port **8003**.
+    This builds/runs a optimized Bun container. The server will be active at port **8003**.
+    Populate the `data/` folder on your server with your database backups to see them in the app.
 
 
 

@@ -1,0 +1,59 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import { getGroupedAnnotations } from "../../../db";
+
+const { dbName, author } = Astro.params;
+
+if (!dbName || !author) {
+    return Astro.redirect("/");
+}
+
+const tree = getGroupedAnnotations(dbName);
+
+if (!tree[author]) {
+    return Astro.redirect(`/${dbName}/`);
+}
+
+const books = Object.keys(tree[author]);
+---
+
+<Layout title={`${author} | Books`} dbName={dbName}>
+    <a
+        slot="back-button"
+        href={`/${dbName}/`}
+        style="font-size: 1.25rem; text-decoration: none; color: var(--text-secondary);"
+        title="Back to Authors">&larr;</a
+    >
+    <span slot="header-title" class="header-context">{author}</span>
+
+    <h1>{author}</h1>
+
+    <div class="grid">
+        {
+            books.map((book) => (
+                <a href={`/${dbName}/${author}/${book}/`} class="card">
+                    <h2 style="font-size: 1.25rem;">{book}</h2>
+                    <p style="color: var(--text-secondary);">
+                        {tree[author][book].length}{" "}
+                        {tree[author][book].length === 1
+                            ? "Annotation"
+                            : "Annotations"}
+                    </p>
+                </a>
+            ))
+        }
+    </div>
+</Layout>
+
+<style>
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 0.5rem;
+    }
+    a.card {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+    }
+</style>

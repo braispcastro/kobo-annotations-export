@@ -1,0 +1,50 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getGroupedAnnotations } from "../../db";
+
+const { dbName } = Astro.params;
+
+if (!dbName) {
+	return Astro.redirect("/");
+}
+
+const tree = getGroupedAnnotations(dbName);
+const authors = Object.keys(tree).sort();
+---
+
+<Layout title="Authors | Kobo Annotations" dbName={dbName}>
+	<a
+		slot="back-button"
+		href="/"
+		style="font-size: 1.25rem; text-decoration: none; color: var(--text-secondary);"
+		title="Back to Backup Selection">&larr;</a
+	>
+	<h1>Authors</h1>
+
+	<div class="grid">
+		{
+			authors.map((author) => (
+				<a href={`/${dbName}/${author}/`} class="card">
+					<h2 style="font-size: 1.25rem;">{author}</h2>
+					<p style="color: var(--text-secondary);">
+						{Object.keys(tree[author]).length} Book
+						{Object.keys(tree[author]).length !== 1 ? "s" : ""}
+					</p>
+				</a>
+			))
+		}
+	</div>
+</Layout>
+
+<style>
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+		gap: 0.5rem;
+	}
+	a.card {
+		display: block;
+		text-decoration: none;
+		color: inherit;
+	}
+</style>
