@@ -262,6 +262,34 @@ const bgMap: Record<string, string> = {
                 filterCards();
             });
         });
+
+        // Scroll logic for filters
+        const filtersContainer = document.querySelector(".filters-container");
+        let lastScrollY = window.scrollY;
+
+        window.addEventListener(
+            "scroll",
+            () => {
+                const currentScrollY = window.scrollY;
+
+                if (currentScrollY <= 10) {
+                    // At the top
+                    filtersContainer.classList.remove("filters-hidden");
+                } else if (
+                    currentScrollY > lastScrollY &&
+                    currentScrollY > 100
+                ) {
+                    // Scrolling down
+                    filtersContainer.classList.add("filters-hidden");
+                } else if (currentScrollY < lastScrollY - 20) {
+                    // Scrolling up a bit (20px threshold to avoid jitter)
+                    filtersContainer.classList.remove("filters-hidden");
+                }
+
+                lastScrollY = currentScrollY;
+            },
+            { passive: true },
+        );
     </script>
 </Layout>
 
