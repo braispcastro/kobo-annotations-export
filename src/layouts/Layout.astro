@@ -36,15 +36,21 @@ const { title, dbName } = Astro.props;
 	<body>
 		<header class="sticky-header">
 			<div class="container header-content">
-				<div style="display: flex; align-items: center; gap: 0.75rem;">
+				<div
+					style="display: flex; align-items: center; gap: 0.5rem; min-width: 0;"
+				>
 					<slot name="back-button" />
-					<a href={dbName ? `/${dbName}/` : "/"} class="site-title">
+					<a
+						href={dbName ? `/${dbName}/` : "/"}
+						class="site-title"
+						style="flex-shrink: 0;"
+					>
 						<img
 							src="/favicon.svg"
 							alt="Kobo Annotations"
 							style="width: 1.5rem; height: 1.5rem;"
 						/>
-						Kobo Annotations
+						<span class="site-title-text">Kobo Annotations</span>
 					</a>
 					<slot name="header-title" />
 				</div>

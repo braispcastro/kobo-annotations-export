@@ -74,14 +74,21 @@ body {
   box-sizing: border-box;
 }
 
-a {
+a,
+button {
   color: var(--accent);
   text-decoration: none;
-  transition: opacity 0.2s;
+  transition: opacity 0.2s, transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
 }
 
 a:hover {
   opacity: 0.8;
+}
+
+a:active,
+button:active {
+  transform: scale(0.97);
 }
 
 h1,
@@ -133,6 +140,30 @@ h3 {
   opacity: 1;
 }
 
+@media (max-width: 480px) {
+  .site-title-text {
+    display: none;
+  }
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-left: -0.75rem;
+  font-size: 1.5rem;
+  color: var(--text-secondary) !important;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.back-button:hover {
+  background-color: rgba(127, 127, 127, 0.15);
+  color: var(--text-primary) !important;
+}
+
 /* Glassmorphism Card */
 .card {
   background: var(--card-bg);
@@ -172,6 +203,16 @@ h3 {
 
 @media (max-width: 600px) {
   .header-context {
+    max-width: 150px;
+  }
+
+  .container {
+    padding: 1rem 1.25rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .header-context {
     display: none;
   }
 }
@@ -196,15 +237,16 @@ blockquote {
 .filters-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem;
+  gap: 1.5rem;
   margin-bottom: 2rem;
-  padding: 1rem;
+  padding: 1.25rem;
   background: var(--filter-bg);
   border: 1px solid var(--border-color);
   border-radius: 12px;
   position: sticky;
-  top: 72px;
-  /* Just below the sticky header */
+  top: 80px;
+  /* Just below the sticky header with some breathing room */
+  margin-top: 0.5rem;
   z-index: 900;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -236,6 +278,7 @@ blockquote {
   display: flex;
   gap: 0.5rem;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .filter-btn {
@@ -259,6 +302,12 @@ blockquote {
   background: var(--accent);
   border-color: var(--accent);
   color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.filter-btn[data-color="all"] {
+  border-radius: 20px;
+  padding: 0.3rem 0.9rem;
 }
 
 .filter-btn.disabled {
@@ -277,7 +326,7 @@ blockquote {
 
 .color-dot.active {
   border-color: var(--text-primary);
-  box-shadow: 0 0 0 2px var(--bg-color);
+  box-shadow: 0 0 0 2px var(--bg-color), 0 0 0 4px var(--accent);
 }
 
 .color-dot.yellow {
@@ -294,4 +343,16 @@ blockquote {
 
 .color-dot.green {
   background: var(--highlight-green);
+}
+
+@media (max-width: 600px) {
+  .filters-container {
+    gap: 1.25rem;
+    padding: 1rem;
+  }
+
+  .filter-btn {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.8rem;
+  }
 }
