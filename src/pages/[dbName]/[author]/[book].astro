@@ -130,11 +130,10 @@ const bgMap: Record<string, string> = {
                                 {annot.Type}
                             </span>
                         </div>
-
                         {annot.Type === "markup" && (
                             <div
                                 class="markup-container"
-                                style="margin-bottom: 2rem; border-radius: 8px; overflow: hidden; background: #f5f5f5; position: relative; width: 100%; line-height: 0;"
+                                style="margin-bottom: 2rem; border-radius: 8px; overflow: hidden; background: var(--border-color); position: relative; width: 100%; line-height: 0;"
                             >
                                 <img
                                     src={`/api/markups/${dbName}/${annot.BookmarkID}.jpg`}
