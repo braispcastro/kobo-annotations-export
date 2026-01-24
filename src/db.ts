@@ -67,7 +67,7 @@ export function getAnnotations(dbName: string): Annotation[] {
           AND ch.ContentID LIKE (c.ContentID || '-%')
           AND ch.ContentType = '899'
       WHERE (b.Type = 'highlight' OR b.Type = 'note' OR b.Type = 'markup')
-      ORDER BY c.BookTitle, b.DateCreated
+      ORDER BY c.BookTitle, c.VolumeIndex, b.ChapterProgress
     `);
 
     const rows = query.all() as any[];
