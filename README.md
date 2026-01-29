@@ -16,7 +16,7 @@ This project allows you to visualize your highlights and notes in a **premium in
 - **🎨 Visual Fidelity**: Accurately renders Kobo highlight colors (**Green**, **Blue**, **Pink**, **Yellow**).
 - **✍️ Handwritten Markups**: Specialized support for Kobo Libra Colour handwritten annotations (SVG overlays over page screenshots).
 - **🌗 Theme Switcher**: Includes a persistent **Light/Dark** mode toggle.
-- **🔍 Smart Filtering**: Instantly filter annotations by type (Highlights, Notes, Markups) or by their original Kobo color.
+- **🔍 Advanced Search & Filtering**: Real-time search across highlights, notes, and chapters. Combine it with instant filters for type (Highlights, Notes, Markups) and original Kobo colors.
 - **💎 Premium UI**: Modern aesthetic with **Glassmorphism** effects (sticky headers and filters), Inter typography, and responsive grid layout.
 - **🚀 High Performance**: Powered by Bun's native SQLite driver and Astro's Server-Side Rendering (SSR).
 
