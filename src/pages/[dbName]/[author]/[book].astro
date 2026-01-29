@@ -45,57 +45,92 @@ const bgMap: Record<string, string> = {
     </p>
 
     <div class="filters-container">
-        <div class="filter-group">
-            <span class="filter-label">Type</span>
-            <div class="filter-buttons" id="type-filters">
-                <button
-                    id="filter-all-types"
-                    class="filter-btn active"
-                    data-type="all">All</button
-                >
-                <button
-                    id="filter-highlights"
-                    class="filter-btn"
-                    data-type="highlight">Highlights</button
-                >
-                <button id="filter-notes" class="filter-btn" data-type="note"
-                    >Notes</button
-                >
-                <button
-                    id="filter-markups"
-                    class="filter-btn"
-                    data-type="markup">Markups</button
-                >
+        <div class="filters-top">
+            <div class="filter-group search-group">
+                <span class="filter-label">Search</span>
+                <div class="search-bar-container">
+                    <div class="search-wrapper">
+                        <input
+                            type="text"
+                            id="search-input"
+                            placeholder="Search in highlights, notes or chapters..."
+                            class="search-input"
+                        />
+                        <button
+                            id="clear-search"
+                            class="clear-btn"
+                            title="Clear search">×</button
+                        >
+                    </div>
+                    <button
+                        id="reset-all"
+                        class="reset-btn icon-reset"
+                        title="Reset all filters">↺</button
+                    >
+                </div>
             </div>
         </div>
-        <div class="filter-group">
-            <span class="filter-label">Color</span>
-            <div class="filter-buttons" id="color-filters">
-                <button
-                    id="filter-all-colors"
-                    class="filter-btn active"
-                    data-color="all">All</button
-                >
-                <button
-                    id="filter-color-yellow"
-                    class="filter-btn color-dot yellow"
-                    data-color="0"
-                    title="Yellow"></button>
-                <button
-                    id="filter-color-pink"
-                    class="filter-btn color-dot pink"
-                    data-color="1"
-                    title="Pink"></button>
-                <button
-                    id="filter-color-blue"
-                    class="filter-btn color-dot blue"
-                    data-color="2"
-                    title="Blue"></button>
-                <button
-                    id="filter-color-green"
-                    class="filter-btn color-dot green"
-                    data-color="3"
-                    title="Green"></button>
+
+        <div class="filters-bottom">
+            <div class="filter-group">
+                <span class="filter-label">Type</span>
+                <div class="filter-buttons" id="type-filters">
+                    <button
+                        id="filter-all-types"
+                        class="filter-btn active"
+                        data-type="all">All</button
+                    >
+                    <button
+                        id="filter-highlights"
+                        class="filter-btn"
+                        data-type="highlight">Highlights</button
+                    >
+                    <button
+                        id="filter-notes"
+                        class="filter-btn"
+                        data-type="note">Notes</button
+                    >
+                    <button
+                        id="filter-markups"
+                        class="filter-btn"
+                        data-type="markup">Markups</button
+                    >
+                </div>
+            </div>
+            <div class="filter-group">
+                <span class="filter-label">Color</span>
+                <div class="filter-buttons" id="color-filters">
+                    <button
+                        id="filter-all-colors"
+                        class="filter-btn active"
+                        data-color="all">All</button
+                    >
+                    <button
+                        id="filter-color-yellow"
+                        class="filter-btn color-dot yellow"
+                        data-color="0"
+                        title="Yellow"></button>
+                    <button
+                        id="filter-color-pink"
+                        class="filter-btn color-dot pink"
+                        data-color="1"
+                        title="Pink"></button>
+                    <button
+                        id="filter-color-blue"
+                        class="filter-btn color-dot blue"
+                        data-color="2"
+                        title="Blue"></button>
+                    <button
+                        id="filter-color-green"
+                        class="filter-btn color-dot green"
+                        data-color="3"
+                        title="Green"></button>
+                </div>
+            </div>
+        </div>
+        <div class="filters-info">
+            <div id="filter-stats" class="filter-stats">
+                Showing all annotations
             </div>
         </div>
     </div>
@@ -152,17 +187,25 @@ const bgMap: Record<string, string> = {
                         )}
 
                         {annot.Text && (
-                            <blockquote style="border: none; background: transparent; padding: 0; margin-bottom: 1rem; font-style: italic;">
+                            <blockquote
+                                class="highlight-text"
+                                style="border: none; background: transparent; padding: 0; margin-bottom: 1rem; font-style: italic;"
+                            >
                                 "{annot.Text.trim()}"
                             </blockquote>
                         )}
 
                         {annot.Annotation && (
-                            <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                            <div
+                                class="note-container"
+                                style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);"
+                            >
                                 <strong style="color: var(--accent); display: block; margin-bottom: 0.25rem;">
                                     Note:
                                 </strong>
-                                {annot.Annotation}
+                                <div class="note-content">
+                                    {annot.Annotation}
+                                </div>
                             </div>
                         )}
 
@@ -221,6 +264,23 @@ const bgMap: Record<string, string> = {
         }
     </div>
 
+    <!-- Empty State -->
+    <div
+        id="empty-state"
+        class="card"
+        style="display: none; text-align: center; padding: 3rem; opacity: 0.7;"
+    >
+        <span style="font-size: 2rem; display: block; margin-bottom: 1rem;"
+            >🔍</span
+        >
+        <p>No annotations found matching your criteria.</p>
+        <button
+            id="reset-empty"
+            class="reset-btn"
+            style="margin: 1.5rem auto 0 auto;">Clear all filters</button
+        >
+    </div>
+
     <script is:inline>
         const typeButtons = document.querySelectorAll(
             "#type-filters .filter-btn",
@@ -228,28 +288,90 @@ const bgMap: Record<string, string> = {
         const colorButtons = document.querySelectorAll(
             "#color-filters .filter-btn",
         );
-        const cards = document.querySelectorAll(".annotation-card");
+        const searchInput = document.getElementById("search-input");
+        const clearSearchBtn = document.getElementById("clear-search");
+        const resetAllBtn = document.getElementById("reset-all");
+        const resetEmptyBtn = document.getElementById("reset-empty");
+        const statsDisplay = document.getElementById("filter-stats");
+        const emptyState = document.getElementById("empty-state");
+        const annotationsList = document.querySelector(".annotations");
+        const cards = Array.from(document.querySelectorAll(".annotation-card"));
 
         let activeType = "all";
         let activeColor = "all";
+        let searchQuery = "";
+        let filteredCards = [...cards];
+
+        function updateStats() {
+            if (filteredCards.length === cards.length) {
+                statsDisplay.textContent = `Showing all ${cards.length} annotations`;
+            } else {
+                statsDisplay.textContent = `Showing ${filteredCards.length} of ${cards.length} annotations`;
+            }
+        }
+
+        function renderResults() {
+            cards.forEach((card) => (card.style.display = "none"));
+
+            if (filteredCards.length === 0) {
+                emptyState.style.display = "block";
+                annotationsList.style.display = "none";
+            } else {
+                emptyState.style.display = "none";
+                annotationsList.style.display = "flex";
+                filteredCards.forEach((card) => (card.style.display = "block"));
+            }
+        }
 
         function filterCards() {
-            cards.forEach((card) => {
+            searchQuery = searchInput.value.toLowerCase().trim();
+            clearSearchBtn.style.visibility = searchQuery
+                ? "visible"
+                : "hidden";
+
+            filteredCards = cards.filter((card) => {
                 const type = card.getAttribute("data-type");
                 const color = card.getAttribute("data-color");
+
                 const typeMatch = activeType === "all" || type === activeType;
                 const colorMatch =
                     activeColor === "all" || color === activeColor;
-                card.style.display = typeMatch && colorMatch ? "block" : "none";
+
+                let searchMatch = true;
+                if (searchQuery) {
+                    const text =
+                        card
+                            .querySelector(".highlight-text")
+                            ?.textContent.toLowerCase() || "";
+                    const note =
+                        card
+                            .querySelector(".note-content")
+                            ?.textContent.toLowerCase() || "";
+                    const chapter =
+                        card
+                            .querySelector(".chapter-title")
+                            ?.textContent.toLowerCase() || "";
+                    searchMatch =
+                        text.includes(searchQuery) ||
+                        note.includes(searchQuery) ||
+                        chapter.includes(searchQuery);
+                }
+
+                return typeMatch && colorMatch && searchMatch;
             });
+
+            updateStats();
+            renderResults();
         }
 
+        // Event Listeners
         typeButtons.forEach((btn) => {
             btn.addEventListener("click", () => {
                 typeButtons.forEach((b) => b.classList.remove("active"));
                 btn.classList.add("active");
                 activeType = btn.getAttribute("data-type");
                 filterCards();
+                btn.blur();
             });
         });
 
@@ -259,8 +381,44 @@ const bgMap: Record<string, string> = {
                 btn.classList.add("active");
                 activeColor = btn.getAttribute("data-color");
                 filterCards();
+                btn.blur();
             });
         });
+
+        searchInput.addEventListener("input", filterCards);
+
+        clearSearchBtn.addEventListener("click", () => {
+            searchInput.value = "";
+            filterCards();
+            searchInput.focus();
+        });
+
+        function resetAll() {
+            activeType = "all";
+            activeColor = "all";
+            searchInput.value = "";
+
+            typeButtons.forEach((b) =>
+                b.classList.toggle("active", b.dataset.type === "all"),
+            );
+            colorButtons.forEach((b) =>
+                b.classList.toggle("active", b.dataset.color === "all"),
+            );
+
+            filterCards();
+        }
+
+        resetAllBtn.addEventListener("click", () => {
+            resetAll();
+            resetAllBtn.blur();
+        });
+        resetEmptyBtn.addEventListener("click", () => {
+            resetAll();
+            resetEmptyBtn.blur();
+        });
+
+        // Initial render
+        filterCards();
 
         // Scroll logic for filters
         const filtersContainer = document.querySelector(".filters-container");
@@ -272,16 +430,13 @@ const bgMap: Record<string, string> = {
                 const currentScrollY = window.scrollY;
 
                 if (currentScrollY <= 10) {
-                    // At the top
                     filtersContainer.classList.remove("filters-hidden");
                 } else if (
                     currentScrollY > lastScrollY &&
                     currentScrollY > 100
                 ) {
-                    // Scrolling down
                     filtersContainer.classList.add("filters-hidden");
                 } else if (currentScrollY < lastScrollY - 20) {
-                    // Scrolling up a bit (20px threshold to avoid jitter)
                     filtersContainer.classList.remove("filters-hidden");
                 }
 
@@ -298,6 +453,152 @@ const bgMap: Record<string, string> = {
         flex-direction: column;
         gap: 0.75rem;
     }
+
+    /* Filters Layout Enhancements */
+    .filters-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .filters-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 1rem;
+        width: 100%;
+    }
+
+    .search-group {
+        flex: 1;
+    }
+
+    .search-bar-container {
+        display: flex;
+        gap: 0.5rem;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .search-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        flex: 1;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 0.6rem 2.25rem 0.6rem 0.75rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        color: var(--text-primary);
+        font-size: 0.9rem;
+        font-family: var(--font-family);
+        transition: all 0.2s;
+        height: 100%;
+    }
+
+    .search-input:focus {
+        outline: none;
+        border-color: var(--accent);
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.15);
+    }
+
+    .clear-btn {
+        position: absolute;
+        right: 0.5rem;
+        background: transparent;
+        border: none;
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+        cursor: pointer;
+        padding: 0.2rem;
+        line-height: 1;
+        visibility: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .clear-btn:hover {
+        color: var(--text-primary);
+    }
+
+    .filters-bottom {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    .reset-btn {
+        padding: 0.4rem 0.8rem;
+        background: transparent;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        color: var(--text-secondary);
+        font-size: 0.8rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        height: auto;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .icon-reset {
+        width: 42px;
+        flex-shrink: 0;
+        font-size: 1.25rem;
+        padding: 0;
+    }
+
+    .reset-btn:hover {
+        border-color: var(--text-secondary);
+        color: var(--text-primary);
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    .reset-btn:active {
+        background: rgba(255, 255, 255, 0.12);
+        transform: scale(0.95);
+    }
+
+    .reset-btn:focus,
+    .clear-btn:focus,
+    .filter-btn:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+    .reset-btn:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        background: rgba(var(--accent-rgb, 88, 166, 255), 0.1);
+    }
+
+    .filters-info {
+        padding-top: 0.75rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        width: 100%;
+    }
+
+    .filter-stats {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        opacity: 0.7;
+    }
+
+    /* Existing Annotations Footer Styles */
     .annot-footer {
         margin-top: 1.5rem;
         padding-top: 0.75rem;
@@ -310,6 +611,7 @@ const bgMap: Record<string, string> = {
         gap: 1rem;
         flex-wrap: wrap;
     }
+
     .footer-left {
         display: flex;
         flex-direction: column;
@@ -317,6 +619,7 @@ const bgMap: Record<string, string> = {
         flex: 1;
         min-width: 140px;
     }
+
     .chapter-title {
         font-weight: 600;
         color: var(--text-primary);
@@ -325,11 +628,13 @@ const bgMap: Record<string, string> = {
         text-overflow: ellipsis;
         max-width: 100%;
     }
+
     .progress-wrapper {
         display: flex;
         align-items: center;
         gap: 0.5rem;
     }
+
     .progress-bar-bg {
         width: 100px;
         height: 4px;
@@ -338,14 +643,17 @@ const bgMap: Record<string, string> = {
         overflow: hidden;
         flex-shrink: 0;
     }
+
     .progress-bar-fill {
         height: 100%;
     }
+
     .progress-text {
         font-size: 0.75rem;
         font-weight: 500;
         opacity: 0.8;
     }
+
     .footer-right {
         text-align: right;
         display: flex;
