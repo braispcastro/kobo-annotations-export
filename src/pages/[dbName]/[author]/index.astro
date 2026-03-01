@@ -1,6 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
-import { getGroupedAnnotations } from "../../../db";
+import { getBooksByAuthor } from "../../../db";
 
 const { dbName, author } = Astro.params;
 
@@ -8,13 +8,11 @@ if (!dbName || !author) {
     return Astro.redirect("/");
 }
 
-const tree = getGroupedAnnotations(dbName);
+const books = getBooksByAuthor(dbName, author);
 
-if (!tree[author]) {
+if (books.length === 0) {
     return Astro.redirect(`/${dbName}/`);
 }
-
-const books = Object.keys(tree[author]);
 ---
 
 <Layout title={`${author} | Books`} dbName={dbName}>
@@ -31,11 +29,11 @@ const books = Object.keys(tree[author]);
     <div class="grid">
         {
             books.map((book) => (
-                <a href={`/${dbName}/${author}/${book}/`} class="card">
-                    <h2 style="font-size: 1.25rem;">{book}</h2>
+                <a href={`/${dbName}/${author}/${book.title}/`} class="card">
+                    <h2 style="font-size: 1.25rem;">{book.title}</h2>
                     <p style="color: var(--text-secondary);">
-                        {tree[author][book].length}{" "}
-                        {tree[author][book].length === 1
+                        {book.annotationCount}{" "}
+                        {book.annotationCount === 1
                             ? "Annotation"
                             : "Annotations"}
                     </p>

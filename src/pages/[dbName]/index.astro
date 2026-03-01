@@ -1,15 +1,15 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { getGroupedAnnotations } from "../../db";
+import { getAuthors, getDatabases } from "../../db";
 
 const { dbName } = Astro.params;
 
-if (!dbName) {
+const databases = getDatabases();
+if (!dbName || !databases.includes(dbName)) {
 	return Astro.redirect("/");
 }
 
-const tree = getGroupedAnnotations(dbName);
-const authors = Object.keys(tree).sort();
+const authors = getAuthors(dbName);
 ---
 
 <Layout title="Authors | Kobo Annotations" dbName={dbName}>
@@ -19,16 +19,23 @@ const authors = Object.keys(tree).sort();
 		class="back-button"
 		title="Back to Backup Selection">&larr;</a
 	>
-	<h1>Authors</h1>
+	<div
+		style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;"
+	>
+		<h1 style="margin-bottom: 0;">Authors</h1>
+		<a href={`/${dbName}/stats/`} class="stats-btn">
+			<span>📊</span> View Statistics
+		</a>
+	</div>
 
 	<div class="grid">
 		{
 			authors.map((author) => (
-				<a href={`/${dbName}/${author}/`} class="card">
-					<h2 style="font-size: 1.25rem;">{author}</h2>
+				<a href={`/${dbName}/${author.name}/`} class="card">
+					<h2 style="font-size: 1.25rem;">{author.name}</h2>
 					<p style="color: var(--text-secondary);">
-						{Object.keys(tree[author]).length} Book
-						{Object.keys(tree[author]).length !== 1 ? "s" : ""}
+						{author.bookCount} Book
+						{author.bookCount !== 1 ? "s" : ""}
 					</p>
 				</a>
 			))
@@ -46,5 +53,30 @@ const authors = Object.keys(tree).sort();
 		display: block;
 		text-decoration: none;
 		color: inherit;
+	}
+
+	.stats-btn {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.5rem 1rem;
+		background: var(--card-bg);
+		border: 1px solid var(--border-color);
+		border-radius: 8px;
+		color: var(--text-primary);
+		font-size: 0.9rem;
+		font-weight: 600;
+		text-decoration: none;
+		transition: all 0.2s;
+	}
+
+	.stats-btn:hover {
+		border-color: var(--accent);
+		color: var(--accent);
+		transform: translateY(-1px);
+	}
+
+	.stats-btn span {
+		font-size: 1.1rem;
 	}
 </style>
