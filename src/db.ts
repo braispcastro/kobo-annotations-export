@@ -28,7 +28,10 @@ export function getDatabases(): string[] {
   return fs.readdirSync(DATA_DIR, { withFileTypes: true })
     .filter(dirent => dirent.isDirectory())
     .map(dirent => dirent.name)
-    .filter(name => fs.existsSync(path.join(DATA_DIR, name, "KoboReader.sqlite")));
+    .filter(name => {
+      const sqlitePath = path.join(DATA_DIR, name, "KoboReader.sqlite");
+      return fs.existsSync(sqlitePath);
+    });
 }
 
 /**
@@ -42,14 +45,65 @@ function getDbConnection(dbName: string) {
   return new Database(dbPath, { readonly: true });
 }
 
-export function getAnnotations(dbName: string): Annotation[] {
+export function getAuthors(dbName: string): { name: string; bookCount: number }[] {
+  const db = getDbConnection(dbName);
+  try {
+    const query = db.query(`
+      SELECT 
+          IFNULL(m.Attribution, 'Unknown Author') as AuthorName,
+          COUNT(DISTINCT c.BookTitle) as BookCount
+      FROM Bookmark b
+      JOIN content c ON b.ContentID = c.ContentID
+      LEFT JOIN content m ON c.BookID = m.ContentID AND m.ContentType = '6'
+      WHERE (b.Type = 'highlight' OR b.Type = 'note' OR b.Type = 'markup')
+      GROUP BY AuthorName
+      ORDER BY AuthorName
+    `);
+
+    const rows = query.all() as any[];
+    return rows.map(row => ({
+      name: row.AuthorName,
+      bookCount: row.BookCount
+    }));
+  } finally {
+    db.close();
+  }
+}
+
+export function getBooksByAuthor(dbName: string, author: string): { title: string; annotationCount: number }[] {
+  const db = getDbConnection(dbName);
+  try {
+    const query = db.query(`
+      SELECT 
+          c.BookTitle,
+          COUNT(b.BookmarkID) as AnnotationCount
+      FROM Bookmark b
+      JOIN content c ON b.ContentID = c.ContentID
+      LEFT JOIN content m ON c.BookID = m.ContentID AND m.ContentType = '6'
+      WHERE (b.Type = 'highlight' OR b.Type = 'note' OR b.Type = 'markup')
+      AND IFNULL(m.Attribution, 'Unknown Author') = ?
+      GROUP BY c.BookTitle
+      ORDER BY c.BookTitle
+    `);
+
+    const rows = query.all(author) as any[];
+    return rows.map(row => ({
+      title: row.BookTitle || "Unknown Book",
+      annotationCount: row.AnnotationCount
+    }));
+  } finally {
+    db.close();
+  }
+}
+
+export function getAnnotationsByBook(dbName: string, author: string, book: string): Annotation[] {
   const db = getDbConnection(dbName);
   try {
     const query = db.query(`
       SELECT 
           b.BookmarkID,
           c.BookTitle,
-          m.Attribution as AuthorName,
+          IFNULL(m.Attribution, 'Unknown Author') as AuthorName,
           b.Text,
           b.Annotation,
           b.DateCreated,
@@ -67,45 +121,28 @@ export function getAnnotations(dbName: string): Annotation[] {
           AND ch.ContentID LIKE (c.ContentID || '-%')
           AND ch.ContentType = '899'
       WHERE (b.Type = 'highlight' OR b.Type = 'note' OR b.Type = 'markup')
-      ORDER BY c.BookTitle, c.VolumeIndex, b.ChapterProgress
+      AND IFNULL(m.Attribution, 'Unknown Author') = ?
+      AND c.BookTitle = ?
+      ORDER BY c.VolumeIndex, b.ChapterProgress
     `);
 
-    const rows = query.all() as any[];
+    const rows = query.all(author, book) as any[];
 
-    return rows.map((row) => {
-      return {
-        BookmarkID: row.BookmarkID,
-        BookTitle: row.BookTitle || "Unknown Book",
-        Text: row.Text,
-        Annotation: row.Annotation,
-        DateCreated: row.DateCreated,
-        DateModified: row.DateModified,
-        Type: row.Type,
-        Color: row.Color,
-        ContentID: row.ContentID,
-        Author: row.AuthorName || "Unknown Author",
-        ChapterProgress: row.ChapterProgress || 0,
-        ChapterTitle: row.ChapterTitle || null,
-      };
-    });
+    return rows.map((row) => ({
+      BookmarkID: row.BookmarkID,
+      BookTitle: row.BookTitle || "Unknown Book",
+      Text: row.Text,
+      Annotation: row.Annotation,
+      DateCreated: row.DateCreated,
+      DateModified: row.DateModified,
+      Type: row.Type,
+      Color: row.Color,
+      ContentID: row.ContentID,
+      Author: row.AuthorName,
+      ChapterProgress: row.ChapterProgress || 0,
+      ChapterTitle: row.ChapterTitle || null,
+    }));
   } finally {
     db.close();
   }
-}
-
-export function getGroupedAnnotations(dbName: string) {
-  const annotations = getAnnotations(dbName);
-  const tree: Record<string, Record<string, Annotation[]>> = {};
-
-  for (const annot of annotations) {
-    if (!tree[annot.Author]) {
-      tree[annot.Author] = {};
-    }
-    if (!tree[annot.Author][annot.BookTitle]) {
-      tree[annot.Author][annot.BookTitle] = [];
-    }
-    tree[annot.Author][annot.BookTitle].push(annot);
-  }
-
-  return tree;
 }

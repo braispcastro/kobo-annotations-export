@@ -1,6 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
-import { getGroupedAnnotations } from "../../../db";
+import { getAnnotationsByBook } from "../../../db";
 
 const { dbName, author, book } = Astro.params;
 
@@ -8,10 +8,9 @@ if (!dbName || !author || !book) {
     return Astro.redirect("/");
 }
 
-const tree = getGroupedAnnotations(dbName);
-const annotations = tree[author]?.[book];
+const annotations = getAnnotationsByBook(dbName, author, book);
 
-if (!annotations) {
+if (annotations.length === 0) {
     return Astro.redirect(`/${dbName}/${author}/`);
 }
 
@@ -506,7 +505,7 @@ const bgMap: Record<string, string> = {
         outline: none;
         border-color: var(--accent);
         background: rgba(255, 255, 255, 0.08);
-        box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.15);
+        box-shadow: 0 0 0 3px rgba(var(--accent-rgb, 88, 166, 255), 0.15);
     }
 
     .clear-btn {
