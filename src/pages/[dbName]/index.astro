@@ -19,7 +19,14 @@ const authors = getAuthors(dbName);
 		class="back-button"
 		title="Back to Backup Selection">&larr;</a
 	>
-	<h1>Authors</h1>
+	<div
+		style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;"
+	>
+		<h1 style="margin-bottom: 0;">Authors</h1>
+		<a href={`/${dbName}/stats/`} class="stats-btn">
+			<span>📊</span> View Statistics
+		</a>
+	</div>
 
 	<div class="grid">
 		{
@@ -46,5 +53,30 @@ const authors = getAuthors(dbName);
 		display: block;
 		text-decoration: none;
 		color: inherit;
+	}
+
+	.stats-btn {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.5rem 1rem;
+		background: var(--card-bg);
+		border: 1px solid var(--border-color);
+		border-radius: 8px;
+		color: var(--text-primary);
+		font-size: 0.9rem;
+		font-weight: 600;
+		text-decoration: none;
+		transition: all 0.2s;
+	}
+
+	.stats-btn:hover {
+		border-color: var(--accent);
+		color: var(--accent);
+		transform: translateY(-1px);
+	}
+
+	.stats-btn span {
+		font-size: 1.1rem;
 	}
 </style>

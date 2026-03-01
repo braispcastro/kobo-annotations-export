@@ -146,3 +146,96 @@ export function getAnnotationsByBook(dbName: string, author: string, book: strin
     db.close();
   }
 }
+
+export interface KoboStats {
+  totalBooks: number;
+  readBooks: number;
+  readingBooks: number;
+  totalAnnotations: number;
+  timeSpentHours: number;
+  colorDistribution: Record<string, number>;
+  achievements: { name: string; description: string; date: string }[];
+  recentBooks: { title: string; author: string; progress: number; lastRead: string }[];
+}
+
+export function getKoboStats(dbName: string): KoboStats {
+  const db = getDbConnection(dbName);
+  try {
+    // Basic Counts & Time
+    const general = db.query(`
+      SELECT 
+          COUNT(*) as total,
+          SUM(CASE WHEN ReadStatus = 2 THEN 1 ELSE 0 END) as readCount,
+          SUM(CASE WHEN ReadStatus = 1 THEN 1 ELSE 0 END) as readingCount,
+          SUM(IFNULL(TimeSpentReading, 0)) / 3600 as hours
+      FROM content 
+      WHERE ContentType = '6'
+    `).get() as any;
+
+    // Annotation Colors
+    const colors = db.query(`
+      SELECT Color, COUNT(*) as count 
+      FROM Bookmark 
+      WHERE Type IN ('highlight', 'note')
+      GROUP BY Color
+    `).all() as any[];
+
+    const colorDist: Record<string, number> = { "0": 0, "1": 0, "2": 0, "3": 0 };
+    colors.forEach(c => {
+      if (c.Color !== null) colorDist[String(c.Color)] = c.count;
+    });
+
+    // Total Annotations (including markups)
+    const totalAnnot = db.query(`
+      SELECT COUNT(*) as total 
+      FROM Bookmark 
+      WHERE Type IN ('highlight', 'note', 'markup')
+    `).get() as any;
+
+    // Achievements
+    const achievements = db.query(`
+      SELECT Name, CompleteDescription, DateCreated 
+      FROM Achievement 
+      WHERE PercentComplete = 100
+      ORDER BY DateCreated DESC
+    `).all() as any[];
+
+    // Recent Books (In Progress)
+    const recent = db.query(`
+      SELECT 
+          Title, 
+          IFNULL(Attribution, 'Unknown Author') as Author, 
+          ___PercentRead as Progress, 
+          DateLastRead
+      FROM content 
+      WHERE ContentType = '6' 
+        AND ___PercentRead > 0 
+        AND ___PercentRead < 100
+        AND DateLastRead IS NOT NULL
+      ORDER BY DateLastRead DESC
+      LIMIT 4
+    `).all() as any[];
+
+    return {
+      totalBooks: general.total || 0,
+      readBooks: general.readCount || 0,
+      readingBooks: general.readingCount || 0,
+      totalAnnotations: totalAnnot.total || 0,
+      timeSpentHours: Math.round(general.hours || 0),
+      colorDistribution: colorDist,
+      achievements: achievements.map(a => ({
+        name: a.Name,
+        description: a.CompleteDescription,
+        date: a.DateCreated
+      })),
+      recentBooks: recent.map(r => ({
+        title: r.Title,
+        author: r.Author,
+        progress: r.Progress || 0,
+        lastRead: r.DateLastRead
+      }))
+    };
+  } finally {
+    db.close();
+  }
+}
