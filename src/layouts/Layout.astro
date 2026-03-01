@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import { version } from "../../package.json";
 
 interface Props {
 	title: string;
@@ -69,9 +70,9 @@ const { title, dbName } = Astro.props;
 
 		<footer
 			class="container"
-			style="text-align: center; color: var(--text-secondary); font-size: 0.875rem; margin-top: 3rem;"
+			style="text-align: center; color: var(--text-secondary); font-size: 0.8rem; margin-top: 4rem; opacity: 0.6;"
 		>
-			<p>Exported with Astro & Bun</p>
+			<p>Kobo Annotations Export v{version} • Built with Astro & Bun</p>
 		</footer>
 
 		<script is:inline>
