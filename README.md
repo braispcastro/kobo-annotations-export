@@ -4,21 +4,21 @@
 
 > A modern, local web viewer for your Kobo eReader annotations, capable of reading directly from the database without intermediate exports.
 
-This project allows you to visualize your highlights and notes in a **premium interface** that respects the original context. It's built for speed and aesthetics.
+This project allows you to visualize your highlights and notes in a **premium interface** that respects the original context. It's built for speed, deep analytics, and aesthetics.
 
 ---
 
 ## ✨ Key Features
 
+- **📊 Kobo Insights Dashboard**: New in v0.3.0! Get a bird's-eye view of your reading habits. See total books read, total time spent reading (real hours), active books in progress, and your highlight color distribution.
+- **⚡ Optimized Surgical SQL**: Re-engineered database engine that only fetches what you need. Zero overhead, near-instant loading even with massive libraries.
 - **⚡ On-Demand Reading**: Reads directly from multiple `KoboReader.sqlite` backups. No CSV/JSON export steps needed.
 - **🗄️ Multi-Database Support**: Manage and browse multiple versions or backups of your Kobo library from a single interface.
-- **📊 Detailed Metadata**: Displays annotation type, chapter progress with visual bars, and localized timestamps.
 - **🎨 Visual Fidelity**: Accurately renders Kobo highlight colors (**Green**, **Blue**, **Pink**, **Yellow**).
 - **✍️ Handwritten Markups**: Specialized support for Kobo Libra Colour handwritten annotations (SVG overlays over page screenshots).
 - **🌗 Theme Switcher**: Includes a persistent **Light/Dark** mode toggle.
-- **🔍 Advanced Search & Filtering**: Real-time search across highlights, notes, and chapters. Combine it with instant filters for type (Highlights, Notes, Markups) and original Kobo colors.
+- **🔍 Advanced Search & Filtering**: Real-time search across highlights, notes, and chapters. Combine it with instant filters for type and original Kobo colors.
 - **💎 Premium UI**: Modern aesthetic with **Glassmorphism** effects (sticky headers and filters), Inter typography, and responsive grid layout.
-- **🚀 High Performance**: Powered by Bun's native SQLite driver and Astro's Server-Side Rendering (SSR).
 
 ## 📸 Screenshots
 
@@ -27,7 +27,7 @@ This project allows you to visualize your highlights and notes in a **premium in
   <br>
 
   <p align="center">
-    <b>🗄️ Database & 👥 Author Selection</b><br>
+    <b>📊 Reading Dashboard & 👥 Author Selection</b><br>
     <img src="screenshots/data-selector.png" width="400">
     <img src="screenshots/author-selector.png" width="400">
   </p>
@@ -85,9 +85,10 @@ This project is built with a modern, performance-first stack:
 
 4.  **Run the viewer**:
     ```bash
-    bun dev
+    bun --bun dev
     ```
-    Open **[http://localhost:4321](http://localhost:4321)** to select a backup and browse your library.
+    *Note: Use `--bun` to ensure the native SQLite driver is used correctly.*
+    Open **[http://localhost:4321](http://localhost:4321)** to select a backup and explore your **Kobo Insights**.
 
 ---
 
