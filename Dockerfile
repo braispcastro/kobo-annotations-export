@@ -1,11 +1,14 @@
 # Production-ready Dockerfile for Kobo Annotations Viewer
-# This version assumes the app is already built (via build_site.bat)
-FROM oven/bun:1.1-alpine
+# Expects the app to be pre-built locally from source (bun run build)
+FROM oven/bun:1.3-alpine
 WORKDIR /app
 
 # Copy dependency files and pre-built files
 COPY package.json bun.lock* ./
 COPY . .
+
+# Install production dependencies (cookie, etc.) required by the SSR adapter
+RUN bun install --production
 
 # Final environment setup
 VOLUME /app/data
