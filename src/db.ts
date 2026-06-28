@@ -239,3 +239,38 @@ export function getKoboStats(dbName: string): KoboStats {
     db.close();
   }
 }
+
+export interface VocabWord {
+  Text: string;
+  BookTitle: string | null;
+  Author: string | null;
+  DictSuffix: string | null;
+  DateCreated: string;
+}
+
+export function getVocab(dbName: string): VocabWord[] {
+  const db = getDbConnection(dbName);
+  try {
+    const query = db.query(`
+      SELECT
+        w.Text,
+        c.Title,
+        c.Attribution AS AuthorName,
+        w.DictSuffix,
+        w.DateCreated
+      FROM WordList w
+      LEFT JOIN content c ON w.VolumeId = c.ContentID AND c.ContentType = '6'
+      ORDER BY w.DateCreated DESC
+    `);
+
+    return (query.all() as any[]).map((row) => ({
+      Text: row.Text,
+      BookTitle: row.Title ?? null,
+      Author: row.AuthorName ?? null,
+      DictSuffix: row.DictSuffix ?? null,
+      DateCreated: row.DateCreated,
+    }));
+  } finally {
+    db.close();
+  }
+}

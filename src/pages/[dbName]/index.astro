@@ -23,9 +23,14 @@ const authors = getAuthors(dbName);
 		style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;"
 	>
 		<h1 style="margin-bottom: 0;">Authors</h1>
-		<a href={`/${dbName}/stats/`} class="stats-btn">
-			<span>📊</span> View Statistics
-		</a>
+		<div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+			<a href={`/${dbName}/vocab/`} class="stats-btn">
+				<span>📚</span> Vocabulary
+			</a>
+			<a href={`/${dbName}/stats/`} class="stats-btn">
+				<span>📊</span> View Statistics
+			</a>
+		</div>
 	</div>
 
 	<div class="grid">
@@ -34,8 +39,7 @@ const authors = getAuthors(dbName);
 				<a href={`/${dbName}/${author.name}/`} class="card">
 					<h2 style="font-size: 1.25rem;">{author.name}</h2>
 					<p style="color: var(--text-secondary);">
-						{author.bookCount} Book
-						{author.bookCount !== 1 ? "s" : ""}
+						{`${author.bookCount} Book${author.bookCount !== 1 ? "s" : ""}`}
 					</p>
 				</a>
 			))

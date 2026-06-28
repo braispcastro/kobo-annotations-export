@@ -1,0 +1,163 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getDatabases, getVocab } from "../../db";
+
+const { dbName } = Astro.params;
+
+const databases = getDatabases();
+if (!dbName || !databases.includes(dbName)) {
+  return Astro.redirect("/");
+}
+
+const vocab = getVocab(dbName);
+
+function formatDate(iso: string): string {
+  try {
+    const d = new Date(iso);
+    const day = String(d.getDate()).padStart(2, "0");
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const year = d.getFullYear();
+    return `${day}/${month}/${year}`;
+  } catch {
+    return iso;
+  }
+}
+---
+
+<Layout title="Vocabulary | Kobo Annotations" dbName={dbName}>
+  <a slot="back-button" href={`/${dbName}/`} class="back-button" title="Back to Authors">&larr;</a>
+
+  <div class="vocab-header">
+    <h1>Vocabulary</h1>
+    <p class="vocab-count">{vocab.length} word{vocab.length !== 1 ? "s" : ""} looked up</p>
+  </div>
+
+  <input id="vocab-search" class="vocab-search" type="text" placeholder="Search words…" autocomplete="off">
+
+  {vocab.length === 0 ? (
+    <p class="vocab-empty">No words have been looked up in this backup.</p>
+  ) : (
+    <div class="vocab-list" role="list">
+      {vocab.map((entry) => {
+        const bookLabel = entry.BookTitle ?? "Unknown book";
+        const authorLabel = entry.Author ? `— ${entry.Author}` : "";
+        return (
+          <div class="vocab-item" data-word={entry.Text.toLowerCase()} role="listitem">
+            <h2 class="vocab-word">{entry.Text}</h2>
+            <p class="vocab-meta">
+              <span class="vocab-date">{formatDate(entry.DateCreated)}</span>
+              <span class="vocab-source">{bookLabel} {authorLabel}</span>
+            </p>
+          </div>
+        );
+      })}
+    </div>
+  )}
+</Layout>
+
+<script is:inline>
+(function () {
+  const searchInput = document.getElementById("vocab-search");
+  if (searchInput) {
+    searchInput.addEventListener("input", function () {
+      const q = this.value.toLowerCase().trim();
+      const items = document.querySelectorAll(".vocab-item");
+      for (const item of items) {
+        const word = item.getAttribute("data-word") || "";
+        if (!q || word.includes(q)) {
+          item.style.display = "";
+        } else {
+          item.style.display = "none";
+        }
+      }
+    });
+  }
+})();
+</script>
+
+<style>
+  .vocab-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .vocab-header h1 {
+    margin-bottom: 0;
+  }
+
+  .vocab-count {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+  }
+
+  .vocab-search {
+    display: block;
+    width: 100%;
+    padding: 0.6rem 1rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--card-bg);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    box-sizing: border-box;
+  }
+
+  .vocab-search:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .vocab-empty {
+    color: var(--text-secondary);
+    text-align: center;
+    padding: 3rem 1rem;
+  }
+
+  .vocab-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .vocab-item {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    transition: border-color 0.2s;
+  }
+
+  .vocab-item:hover {
+    border-color: var(--accent);
+  }
+
+  .vocab-word {
+    font-size: 1.15rem;
+    margin: 0;
+  }
+
+  .vocab-meta {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin: 0.3rem 0 0;
+  }
+
+  .vocab-date {
+    margin-right: 1rem;
+  }
+
+  .vocab-source {
+    opacity: 0.85;
+  }
+
+  @media (max-width: 600px) {
+    .vocab-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+  }
+</style>
