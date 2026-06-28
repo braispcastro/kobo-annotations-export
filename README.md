@@ -10,6 +10,7 @@ This project allows you to visualize your highlights and notes in a **premium in
 
 ## ✨ Key Features
 
+- **📚 Vocabulary: Words looked up**: New in v0.4.0!
 - **📊 Kobo Insights Dashboard**: New in v0.3.0! Get a bird's-eye view of your reading habits. See total books read, total time spent reading (real hours), active books in progress, and your highlight color distribution.
 - **⚡ Optimized Surgical SQL**: Re-engineered database engine that only fetches what you need. Zero overhead, near-instant loading even with massive libraries.
 - **⚡ On-Demand Reading**: Reads directly from multiple `KoboReader.sqlite` backups. No CSV/JSON export steps needed.
